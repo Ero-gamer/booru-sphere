@@ -66,7 +66,9 @@ class PostViewer extends HookConsumerWidget {
     final loadMore = timelineController.onLoadMore;
     final loadOriginal =
         ref.watch(contentSettingStateProvider.select((it) => it.loadOriginal));
-    final precachePosts = usePrecachePosts(ref, posts);
+    final gumletProxy =
+        ref.watch(contentSettingStateProvider.select((it) => it.gumletProxy));
+    final precachePosts = usePrecachePosts(ref, posts, gumletProxy: gumletProxy);
 
     useEffect(() {
       showAppbar.value = !fullscreen;
