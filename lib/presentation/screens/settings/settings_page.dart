@@ -52,6 +52,7 @@ class SettingsPage extends StatelessWidget {
               title: Text(context.t.servers.title),
               children: const [
                 _LoadOriginal(),
+                _GumletProxy(),
                 _PostLimit(),
               ],
             ),
@@ -408,6 +409,30 @@ class _ClearCache extends ConsumerWidget {
             ),
           );
         }
+      },
+    );
+  }
+}
+
+class _GumletProxy extends ConsumerWidget {
+  const _GumletProxy();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SwitchListTile(
+      title: const Text('Image proxy (Gumlet)'),
+      subtitle: const Padding(
+        padding: EdgeInsets.only(top: 8),
+        child: Text(
+          'Route images through ero2.gumlet.io for WebP transcoding. '
+          'Configure quality on your Gumlet dashboard. '
+          'Videos are never proxied.',
+        ),
+      ),
+      value: ref.watch(
+          contentSettingStateProvider.select((it) => it.gumletProxy)),
+      onChanged: (value) {
+        ref.read(contentSettingStateProvider.notifier).setGumletProxy(value);
       },
     );
   }
