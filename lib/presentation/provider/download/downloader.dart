@@ -3,9 +3,11 @@ import 'package:boorusphere/data/repository/booru/entity/post.dart';
 import 'package:boorusphere/data/repository/downloads/entity/download_entry.dart';
 import 'package:boorusphere/domain/provider.dart';
 import 'package:boorusphere/presentation/provider/booru/post_headers_factory.dart';
+import 'package:boorusphere/presentation/provider/settings/content_setting_state.dart';
 import 'package:boorusphere/presentation/provider/download/download_state.dart';
 import 'package:boorusphere/presentation/provider/shared_storage_handle.dart';
 import 'package:boorusphere/utils/extensions/string.dart';
+import 'package:boorusphere/utils/gumlet/gumlet_url.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -27,7 +29,11 @@ class Downloader {
     String? url,
     String Function(String fileName)? dest,
   }) async {
-    final fileUrl = url ?? post.originalFile;
+    final gumletProxy = ref.read(contentSettingStateProvider).gumletProxy;
+    final rawFileUrl = url ?? post.originalFile;
+    // When GIP is enabled, download the proxied (WebP) version so the saved
+    // file matches what the user saw while browsing.
+    final fileUrl = toGumletUrl(rawFileUrl, enabled: gumletProxy);
     // sanitize forbidden characters on the file name
     final fileName = Uri.decodeComponent(fileUrl.fileName)
         .replaceAll(RegExp(r'([^a-zA-Z0-9\s\.\(\)_]+)'), '_');
