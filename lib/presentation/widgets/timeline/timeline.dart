@@ -10,6 +10,7 @@ import 'package:boorusphere/presentation/utils/extensions/buildcontext.dart';
 import 'package:boorusphere/presentation/utils/extensions/images.dart';
 import 'package:boorusphere/presentation/utils/extensions/post.dart';
 import 'package:boorusphere/presentation/widgets/timeline/timeline_controller.dart';
+import 'package:boorusphere/utils/gumlet/gumlet_url.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -32,6 +33,8 @@ class Timeline extends ConsumerWidget {
         .watch(timelineControllerProvider.select((it) => it.scrollController));
     final blurExplicit =
         ref.watch(contentSettingStateProvider.select((it) => it.blurExplicit));
+    final gumletProxy =
+        ref.watch(contentSettingStateProvider.select((it) => it.gumletProxy));
 
     return SliverMasonryGrid.count(
       crossAxisCount: flexibleGrid,
@@ -67,6 +70,7 @@ class _ThumbnailCard extends HookConsumerWidget {
   final (int, Post) postdata;
   final AutoScrollController controller;
   final bool blurExplicit;
+  final bool gumletProxy;
   final void Function()? onTap;
   final int gridSize;
 
@@ -105,7 +109,7 @@ class _ThumbnailCard extends HookConsumerWidget {
               );
             },
             child: _ThumbnailImage(
-                post: post, blurExplicit: blurExplicit, gridSize: gridSize),
+                post: post, blurExplicit: blurExplicit, gumletProxy: gumletProxy, gridSize: gridSize),
           ),
         ),
       ),
@@ -117,11 +121,13 @@ class _ThumbnailImage extends ConsumerWidget {
   const _ThumbnailImage({
     required this.post,
     this.blurExplicit = false,
+    required this.gumletProxy,
     required this.gridSize,
   });
 
   final Post post;
   final bool blurExplicit;
+  final bool gumletProxy;
   final int gridSize;
 
   @override
@@ -138,9 +144,12 @@ class _ThumbnailImage extends ConsumerWidget {
       aspectRatio: isLong ? 0.5 : post.aspectRatio,
       child: ExtendedImage.network(
         // load sample photo when it's above 35:9
-        post.aspectRatio < 0.26 && post.sampleFile.asContent().isPhoto
-            ? post.sampleFile
-            : post.previewFile,
+        toGumletUrl(
+          post.aspectRatio < 0.26 && post.sampleFile.asContent().isPhoto
+              ? post.sampleFile
+              : post.previewFile,
+          enabled: gumletProxy,
+        ),
         headers: headers,
         fit: BoxFit.cover,
         cacheWidth: cacheWidth.round(),
