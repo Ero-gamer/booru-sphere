@@ -38,7 +38,7 @@ dependencies:
   async: ^2.8.2
   auto_route: ^9.2.2
   collection: ^1.16.0
-  cookie_jar: ^4.0.1
+  cookie_jar: ^4.0.9
   deep_pick: ^1.0.0
   dio_cookie_manager: ^3.0.0
   dio_smart_retry: ^6.0.0
