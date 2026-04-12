@@ -9,5 +9,6 @@ class ContentSetting with _$ContentSetting {
     @Default(false) bool blurTimelineOnly,
     @Default(false) bool loadOriginal,
     @Default(false) bool videoMuted,
+    @Default(false) bool gumletProxy,
   }) = _ContentSetting;
 }
