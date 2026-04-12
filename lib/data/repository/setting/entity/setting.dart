@@ -14,5 +14,6 @@ enum Setting {
   uiLanguage,
   videoPlayerMuted,
   imeIncognito,
-  searchRating;
+  searchRating,
+  gumletProxy;
 }
