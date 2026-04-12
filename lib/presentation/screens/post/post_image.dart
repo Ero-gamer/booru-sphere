@@ -13,6 +13,7 @@ import 'package:boorusphere/presentation/utils/extensions/buildcontext.dart';
 import 'package:boorusphere/presentation/utils/extensions/images.dart';
 import 'package:boorusphere/presentation/utils/extensions/post.dart';
 import 'package:boorusphere/utils/extensions/number.dart';
+import 'package:boorusphere/utils/gumlet/gumlet_url.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -49,6 +50,11 @@ class PostImage extends HookConsumerWidget {
         ? imageRatio / deviceRatio
         : deviceRatio / imageRatio;
 
+    final rawUrl = contentSetting.loadOriginal
+        ? post.originalFile
+        : post.content.url;
+    final imageUrl = toGumletUrl(rawUrl, enabled: contentSetting.gumletProxy);
+
     return GestureDetector(
       onTap: () {
         ref.read(fullscreenStateProvider.notifier).toggle();
@@ -60,9 +66,7 @@ class PostImage extends HookConsumerWidget {
           Hero(
             tag: post.viewId,
             child: ExtendedImage.network(
-              contentSetting.loadOriginal
-                  ? post.originalFile
-                  : post.content.url,
+              imageUrl,
               headers: headers,
               fit: BoxFit.contain,
               mode: isBlur.value
@@ -98,8 +102,6 @@ class PostImage extends HookConsumerWidget {
               },
               onDoubleTap: (state) async {
                 if (zoomAnimator.isAnimating) {
-                  // It should be impossible for human to do quadruple-tap
-                  // at 150 ms. Still, better than no guards at all
                   return;
                 }
 
