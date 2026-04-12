@@ -94,7 +94,7 @@ dev_dependencies:
   json_serializable: ^6.7.0
   mocktail: ^1.0.4
   riverpod_generator: ^2.4.3
-  pigeon: ^22.3.0
+  pigeon: ^26.1.0
 
 flutter_icons:
   android: true
