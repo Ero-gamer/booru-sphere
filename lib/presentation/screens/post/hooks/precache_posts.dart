@@ -1,6 +1,7 @@
 import 'package:boorusphere/data/repository/booru/entity/post.dart';
 import 'package:boorusphere/presentation/provider/booru/post_headers_factory.dart';
 import 'package:boorusphere/presentation/utils/extensions/post.dart';
+import 'package:boorusphere/utils/gumlet/gumlet_url.dart';
 import 'package:collection/collection.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/widgets.dart';
@@ -11,18 +12,20 @@ void Function(int index, bool loadOriginal) usePrecachePosts(
   WidgetRef ref,
   Iterable<Post> posts, {
   int range = 2,
+  bool gumletProxy = false,
 }) {
-  return use(_PrecachePostsHook(ref, posts, range));
+  return use(_PrecachePostsHook(ref, posts, range, gumletProxy));
 }
 
 typedef _Precacher = void Function(int, bool);
 
 class _PrecachePostsHook extends Hook<_Precacher> {
-  const _PrecachePostsHook(this.ref, this.posts, this.range);
+  const _PrecachePostsHook(this.ref, this.posts, this.range, this.gumletProxy);
 
   final WidgetRef ref;
   final Iterable<Post> posts;
   final int range;
+  final bool gumletProxy;
 
   @override
   HookState<_Precacher, _PrecachePostsHook> createState() {
@@ -35,8 +38,9 @@ class _PrecachePostsState extends HookState<_Precacher, _PrecachePostsHook> {
 
   Future<void> _precacheImagePost(Post post, bool og) async {
     if (!post.content.isPhoto || !context.mounted) return;
+    final rawUrl = og ? post.originalFile : post.content.url;
     final image = ExtendedNetworkImageProvider(
-      og ? post.originalFile : post.content.url,
+      toGumletUrl(rawUrl, enabled: hook.gumletProxy),
       headers: hook.ref.read(postHeadersFactoryProvider(post)),
       cache: true,
       retries: 3,
