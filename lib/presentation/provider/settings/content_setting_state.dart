@@ -15,6 +15,7 @@ class ContentSettingState extends _$ContentSettingState {
       blurTimelineOnly: repo.get(Setting.postBlurTimelineOnly, or: false),
       loadOriginal: repo.get(Setting.postLoadOriginal, or: false),
       videoMuted: repo.get(Setting.videoPlayerMuted, or: false),
+      gumletProxy: repo.get(Setting.gumletProxy, or: false),
     );
   }
 
@@ -41,5 +42,11 @@ class ContentSettingState extends _$ContentSettingState {
     state = state.copyWith(videoMuted: !state.videoMuted);
     await repo.put(Setting.videoPlayerMuted, state.videoMuted);
     return state.videoMuted;
+  }
+
+  Future<void> setGumletProxy(bool value) async {
+    final repo = ref.read(settingsRepoProvider);
+    state = state.copyWith(gumletProxy: value);
+    await repo.put(Setting.gumletProxy, value);
   }
 }
