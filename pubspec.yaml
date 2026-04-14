@@ -69,7 +69,7 @@ dependencies:
   scroll_to_index: ^3.0.1
   separated_row: ^3.0.3
   shimmer: ^3.0.0
-  slang_flutter: 3.31.0
+  slang_flutter: 3.32.0
   slang: 3.31.0
   sqflite: ^2.4.1
   tinycolor2: ^3.0.0
