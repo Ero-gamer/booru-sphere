@@ -1,7 +1,7 @@
 /// Gumlet Image Proxy (GIP) URL builder.
 ///
 /// Rewrites an image URL to route through the Gumlet Fetch CDN:
-///   https://ero2.gumlet.io/fetch/{percent-encoded-original-url}?format=webp
+///   https://gumlet.io/fetch/{percent-encoded-original-url}?format=webp
 ///
 /// - Video URLs are never proxied (Gumlet is an image CDN).
 /// - Favicons and non-http(s) URLs are passed through unchanged.
@@ -27,10 +27,13 @@ String toGumletUrl(String url, {required bool enabled}) {
   if (_videoExtensions.contains(ext)) return url; // skip video files
 
   final encoded = Uri.encodeComponent(url);
+  // Use path: (raw string) instead of pathSegments: to avoid double-encoding.
+  // pathSegments: re-encodes each segment it receives, turning %3A → %253A,
+  // %2F → %252F, etc. — producing a broken URL that Gumlet cannot decode.
   return Uri(
     scheme: 'https',
     host: _proxyHost,
-    pathSegments: ['fetch', encoded],
+    path: '/fetch/$encoded',
     queryParameters: {'format': 'webp'},
   ).toString();
 }
