@@ -41,7 +41,7 @@ dependencies:
   cookie_jar: ^4.0.1
   deep_pick: ^1.0.0
   dio_cookie_manager: ^3.0.0
-  dio_smart_retry: ^6.0.0
+  dio_smart_retry: ^7.0.0
   dio: ^5.8.0
   dynamic_color: ^1.7.0
   file_picker: ^8.3.7
