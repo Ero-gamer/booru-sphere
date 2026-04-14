@@ -48,6 +48,7 @@ class Timeline extends ConsumerWidget {
           postdata: (index, posts.elementAt(index)),
           controller: scrollController,
           blurExplicit: blurExplicit,
+          gumletProxy: gumletProxy,
           onTap: () {
             context.scaffoldMessenger.removeCurrentSnackBar();
             PostViewer.open(context, index: index, posts: posts);
@@ -63,6 +64,7 @@ class _ThumbnailCard extends HookConsumerWidget {
     required this.postdata,
     required this.controller,
     required this.blurExplicit,
+    required this.gumletProxy,
     this.onTap,
     required this.gridSize,
   });
