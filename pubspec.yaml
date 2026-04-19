@@ -67,7 +67,7 @@ dependencies:
   permission_handler: ^11.4.0
   riverpod_annotation: ^2.6.1
   scroll_to_index: ^3.0.1
-  separated_row: ^3.0.3
+  separated_row: ^3.0.4
   shimmer: ^3.0.0
   slang_flutter: ^3.31.2
   slang: ^3.31.2
