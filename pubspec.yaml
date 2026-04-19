@@ -79,7 +79,7 @@ dependencies:
   xml2json: ^6.2.0
   yaml: ^3.1.0
   extended_image: ^10.0.0
-  wakelock_plus: ^1.2.10
+  wakelock_plus: ^1.5.2
 
 dev_dependencies:
   flutter_test:
